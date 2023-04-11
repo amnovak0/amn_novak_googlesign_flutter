@@ -16,7 +16,7 @@ class LoginPageState extends State<LoginPage> {
     return Scaffold(
       backgroundColor: Colors.white,
       appBar: AppBar(
-        title: const Text("Google Login"),
+        title: const Text("Google Login beebee"),
         backgroundColor: Colors.red.shade700,
       ),
       body: Container(
