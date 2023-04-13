@@ -1,8 +1,9 @@
-import 'package:firebase_auth/firebase_auth.dart';
-import 'package:flutter_facebook_auth/flutter_facebook_auth.dart';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_login/auth_service.dart';
 import 'package:flutter_signin_button/flutter_signin_button.dart';
+
+// import 'facebook_auth.dart';
 class LoginPage extends StatefulWidget {
   const LoginPage({Key? key}) : super(key: key);
 
@@ -11,9 +12,12 @@ class LoginPage extends StatefulWidget {
 }
 
 class LoginPageState extends State<LoginPage> {
-
   
+  //facebook trying out 
+  
+  //END OF 
 
+ 
   @override
   Widget build(BuildContext context) {
     final Size size = MediaQuery.of(context).size;
@@ -43,12 +47,19 @@ class LoginPageState extends State<LoginPage> {
                 ),
               Column(
                 children: [        
-                  SignInButton( Buttons.Google, onPressed: () {
-                    AuthService().signInWithGoogle();
+                  SignInButton(Buttons.Google, onPressed:  () async {
+                    await AuthService().signInWithGoogle();
                   }),
-                  SignInButton(Buttons.FacebookNew, onPressed: () {}, )
+                  SignInButton(Buttons.FacebookNew, onPressed: () async {
+                     await AuthService().facebookSignin();
+                   }, )
                 ],
+                
               ),
+              const Text("Sign in with email", style: TextStyle(
+                fontWeight: FontWeight.w500,
+                color: Colors.black54,
+              ),),
             ]),
       ),
     );
