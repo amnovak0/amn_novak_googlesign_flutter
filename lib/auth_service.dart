@@ -1,15 +1,16 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_login_facebook/flutter_login_facebook.dart';
+import 'package:flutter_facebook_auth/flutter_facebook_auth.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'login.dart';
 import 'homepage.dart';
 
+// GENERAL IDEA
 
-  // GENERAL IDEA
+// 1. HANDLE AUTH STATE
+class AuthService {
 
-  // 1. HANDLE AUTH STATE
- class AuthService {
   //Determine if the user is authenticated.
   handleAuthState() {
     return StreamBuilder(
@@ -22,49 +23,31 @@ import 'homepage.dart';
           }
         });
   }
-  //FACEBOOK SIGN IN 
-  fbSignIn() async {
-    final fb = FacebookLogin();
-// Log in
-    final res = await fb.logIn(permissions: [
-      FacebookPermission.publicProfile,
-      FacebookPermission.email,
-    ]);
 
-// Check result status
-    switch (res.status) {
-      case FacebookLoginStatus.success:
-        // Logged in
 
-        // Send access token to server for validation and auth
-        final FacebookAccessToken accessToken = res.accessToken;
-        final AuthCredential authCredential = FacebookAuthProvider.credential(accessToken.token);
-        final result = await FirebaseAuth.instance.signInWithCredential(authCredential);
-
-        // Get profile data
-        final profile = await fb.getUserProfile();
-        print('Hello, ${profile.name}! You ID: ${profile.userId}');
-
-        // Get user profile image url
-        final imageUrl = await fb.getProfileImageUrl(width: 100);
-        print('Your profile image: $imageUrl');
-
-        // Get email (since we request email permission)
-        final email = await fb.getUserEmail();
-        // But user can decline permission
-        if (email != null) print('And your email is $email');
-
-        break;
-      case FacebookLoginStatus.cancel:
-        // User cancel log in
-        break;
-      case FacebookLoginStatus.error:
-        // Log in failed
-        print('Error while log in: ${res.error}');
-        break;
+final FirebaseAuth _auth = FirebaseAuth.instance;
+  Future<String?> facebookSignin() async {
+    try {
+      final _instance = FacebookAuth.instance;
+      final result = await _instance.login(permissions: ['email']);
+      if (result.status == LoginStatus.success) {
+        final OAuthCredential credential =
+            FacebookAuthProvider.credential(result.accessToken!.token);
+        final a = await _auth.signInWithCredential(credential);
+        await _instance.getUserData().then((userData) async {
+          await _auth.currentUser!.updateEmail(userData['email']);
+        });
+        return null;
+      } else if (result.status == LoginStatus.cancelled) {
+        return 'Login cancelled';
+      } else {
+        return 'Error';
+      }
+    } catch (e) {
+      return e.toString();
     }
   }
-
+  
   // 2. signInWithGoogle()
 
   signInWithGoogle() async {
@@ -86,11 +69,20 @@ import 'homepage.dart';
     return await FirebaseAuth.instance.signInWithCredential(credential);
   }
 
-
+ 
 
   // 3. HANDLE SIGNING OUT
-  signOut() {
-    FirebaseAuth.instance.signOut();
+  signOut() async {
+    final FirebaseAuth _firebaseAuth = FirebaseAuth.instance;
+
+    final GoogleSignIn googleUser = await GoogleSignIn(scopes: <String>["email"]);
+
+    await _firebaseAuth.signOut();
+    
+    googleUser.signOut();
   }
   // determine if user is authenticated
 }
+
+
+//FACEBOOK LOGIN HANDLING
