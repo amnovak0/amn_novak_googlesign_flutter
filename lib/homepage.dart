@@ -1,15 +1,21 @@
+
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:flutter_login/login.dart';
 import 'auth_service.dart';
 import 'package:flutter/material.dart';
 
 class HomePage extends StatefulWidget {
-  const HomePage({super.key});
+  
+ const  HomePage({Key? key}) : super(key : key);
   @override
   HomePageState createState() => HomePageState();
 }
 
 class HomePageState extends State<HomePage> {
-  //String? user = FirebaseAuth.instance.currentUser!.email ?? FirebaseAuth.instance.currentUser!.displayName;
+  
+  late String email;
+ 
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -20,17 +26,18 @@ class HomePageState extends State<HomePage> {
           mainAxisAlignment: MainAxisAlignment.center,
           children: <Widget>[
             Text(
-              FirebaseAuth.instance.currentUser!.displayName!,
-              style: const TextStyle(
+               ("${FirebaseAuth.instance.currentUser!.displayName}"),
+                 style: const TextStyle(
                   fontSize: 30,
                   fontWeight: FontWeight.bold,
                   color: Colors.black87),
-            ),
+
+            ), 
             const SizedBox(
               height: 10,
             ),
             Text(
-              FirebaseAuth.instance.currentUser!.email!,
+              ("${FirebaseAuth.instance.currentUser!.email}"),
               style: const TextStyle(
                   fontSize: 20,
                   fontWeight: FontWeight.bold,
@@ -48,8 +55,11 @@ class HomePageState extends State<HomePage> {
                 'LOG OUT',
                 style: TextStyle(color: Colors.white, fontSize: 15),
               ),
-              onPressed: () {
-                AuthService().signOut();
+              onPressed: () async {
+                await AuthService().signOut();
+                print("User signed out");
+                if (!mounted) return;
+                Navigator.push(context, MaterialPageRoute(builder: (context) => const LoginPage()));
               },
             ),
           ],
