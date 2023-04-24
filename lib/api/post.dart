@@ -1,28 +1,7 @@
 import 'package:http/http.dart' as http;
 import 'dart:convert';
 
-// Future<Album> createUser( 
-//   String emailController, String passwordController) async {
-//   final response = await http.post(
-//     Uri.parse(
-//         'https://flutter-log-6ec68-default-rtdb.europe-west1.firebasedatabase.app/'),
-//     headers: <String, String>{
-//       'Content-type': 'application/json',
-//     },
-//     body: jsonEncode(<String, String>{
-//       'email': emailController,
-//       'password': passwordController,
-//     }),
-//   );
-
-//   if (response.statusCode == 201) {
-//     return Album.fromJson(jsonDecode(response.body));
-//   } else {
-//     throw Exception('Failed to create album.');
-//   }
-//   }
-
-   //Flutter form data 
+   //Flutter form data using map
     Future<User>createUser(String username, String password) async {
       var map = 
       <String, dynamic>{};
