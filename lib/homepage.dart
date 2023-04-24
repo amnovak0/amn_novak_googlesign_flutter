@@ -14,16 +14,8 @@ class HomePage extends StatefulWidget {
 }
 
 class HomePageState extends State<HomePage> {
-  
-  // late Future<Album> futureAlbum;
-  // @override
-  // void initState() {
-  //   super.initState();
-  //   futureAlbum = fetchAlbum();
-  // }
 
   late String email;
- 
 
   @override
   Widget build(BuildContext context) {
@@ -56,19 +48,6 @@ class HomePageState extends State<HomePage> {
               height: 30,
             ),
 
-            // FutureBuilder<Album>(
-            //   future: futureAlbum,
-            //   builder: (context, snapshot) {
-            //     if(snapshot.hasData) {
-            //        return Text(snapshot.data!.email); 
-            //     }
-            //     else if(snapshot.hasError) 
-            //     {
-            //       return Text('${snapshot.error}');
-            //     }
-            //     return const CircularProgressIndicator();
-            //   },
-            // ),
             MaterialButton(
               padding: const EdgeInsets.all(10),
               color: Colors.red.shade900,

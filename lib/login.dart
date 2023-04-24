@@ -187,42 +187,7 @@ class LoginPageState extends State<LoginPage> {
                   AuthService().signIn(
                       email: emailController.text,
                       password: passwordController.text);
-                  _futureAlbum = createUser(emailController.text, passwordController.text);
-                  //DEFINING HTTP POST METHOD 
-                  // Navigator.pushReplacement(
-                  //               context,
-                  //               MaterialPageRoute(
-                  //                   builder: (context) => const HomePage()));
-                  // final url = Uri.https(
-                  //     'flutter-log-6ec68-default-rtdb.europe-west1.firebasedatabase.app',
-                  //     'flutter-login.json');
-                  // http
-                  //     .post(url,
-                  //         headers: {
-                  //           'Content-type': 'application/json',
-                  //           'Charset': 'utf-8'
-                  //         },
-                  //         body: json.encode({
-                  //           'email': emailController.text,
-                  //           'password': passwordController.text,
-                  //         },)); 
-                  
-                  // END HTTP POST METHOD
-
-                  //     MaterialPageRoute(builder: (context) => const HomePage()); 
-                      // .then((result) {
-                      //     if (result == null) {
-                      //       Navigator.pushReplacement(
-                      //           context,
-                      //           MaterialPageRoute(
-                      //               builder: (context) => const HomePage()));
-                      //     } else {
-                      //       ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
-                      //         content: Text("Does it work?"),
-                      //       ));
-                      //     }
-                      //   });
-                        
+ 
                 },
                 style: OutlinedButton.styleFrom(
                     foregroundColor: Colors.red.shade900,
