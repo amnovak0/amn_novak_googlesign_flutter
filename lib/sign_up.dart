@@ -1,5 +1,3 @@
-
-
 import 'package:flutter/material.dart';
 import 'package:flutter_login/homepage.dart';
 import 'package:flutter_login/auth_service.dart';
@@ -20,11 +18,11 @@ class SignInPageState extends State<SignInPage> {
   //variable to hide password
   bool _isHidden = true;
 
-     void _togglePasswordView() {
+  void _togglePasswordView() {
     setState(() {
-        _isHidden = !_isHidden;
+      _isHidden = !_isHidden;
     });
-}
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -144,42 +142,52 @@ class SignInPageState extends State<SignInPage> {
                       color: Colors.grey.shade500.withOpacity(0.2),
                     )
                   ]),
-              child: TextField(
+              child: TextFormField(
                 obscureText: _isHidden,
-                  controller: passwordController,
-                  decoration: InputDecoration(
-                    hintText: "Lozinka: ",
-                    prefixIcon: Icon(
-                        Icons.password,
-                        color: Colors.red.shade900,
-                    ),
-                    suffix: InkWell(
-                      onTap: _togglePasswordView,
-                      child: Icon(
-                        // Icons.password,
-                        color: Colors.red.shade900,
-                        _isHidden ? 
-                        Icons.visibility : 
-                        Icons.visibility_off,
-                        
-                      ),
-                      
-                    ),
-                    
-                    focusedBorder: OutlineInputBorder(
-                      borderRadius: BorderRadius.circular(10),
-                      borderSide: const BorderSide(
-                        color: Colors.white,
-                        width: 1.0,
-                      ),
-                      
-                    ),
-                    enabledBorder: OutlineInputBorder(
-                        borderRadius: BorderRadius.circular(10),
-                        borderSide:
-                            const BorderSide(color: Colors.white, width: 1.0)),
+                controller: passwordController,
+
+                // PASSWORD CREATING AND ALL THINGS LIKE THAT
+
+                // validator: (passCurrentValue) {
+                //   RegExp regex = RegExp(
+                //       r'^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[!@#\$&*~]).{8,}$');
+                //   var passNonNullValue = passCurrentValue ?? "";
+                //   if (passNonNullValue.isEmpty) {
+                //     return ("Password is required");
+                //   } else if (passNonNullValue.length < 6) {
+                //     return ("Password Must be more than 5 characters");
+                //   } else if (!regex.hasMatch(passNonNullValue)) {
+                //     return ("Password should contain upper,lower,digit and Special character ");
+                //   }
+                //   return null;
+                // },
+                decoration: InputDecoration(
+                  hintText: "Lozinka: ",
+                  prefixIcon: Icon(
+                    Icons.password,
+                    color: Colors.red.shade900,
                   ),
-                  ),   
+                  suffix: InkWell(
+                    onTap: _togglePasswordView,
+                    child: Icon(
+                      // Icons.password,
+                      color: Colors.red.shade900,
+                      _isHidden ? Icons.visibility : Icons.visibility_off,
+                    ),
+                  ),
+                  focusedBorder: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(10),
+                    borderSide: const BorderSide(
+                      color: Colors.white,
+                      width: 1.0,
+                    ),
+                  ),
+                  enabledBorder: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(10),
+                      borderSide:
+                          const BorderSide(color: Colors.white, width: 1.0)),
+                ),
+              ),
             ),
             SizedBox(
               width: 170,

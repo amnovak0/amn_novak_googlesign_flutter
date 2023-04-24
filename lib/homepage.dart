@@ -1,4 +1,6 @@
+import 'dart:convert';
 
+import 'api/get.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter_login/login.dart';
 import 'auth_service.dart';
@@ -13,6 +15,13 @@ class HomePage extends StatefulWidget {
 
 class HomePageState extends State<HomePage> {
   
+  // late Future<Album> futureAlbum;
+  // @override
+  // void initState() {
+  //   super.initState();
+  //   futureAlbum = fetchAlbum();
+  // }
+
   late String email;
  
 
@@ -46,6 +55,20 @@ class HomePageState extends State<HomePage> {
             const SizedBox(
               height: 30,
             ),
+
+            // FutureBuilder<Album>(
+            //   future: futureAlbum,
+            //   builder: (context, snapshot) {
+            //     if(snapshot.hasData) {
+            //        return Text(snapshot.data!.email); 
+            //     }
+            //     else if(snapshot.hasError) 
+            //     {
+            //       return Text('${snapshot.error}');
+            //     }
+            //     return const CircularProgressIndicator();
+            //   },
+            // ),
             MaterialButton(
               padding: const EdgeInsets.all(10),
               color: Colors.red.shade900,
