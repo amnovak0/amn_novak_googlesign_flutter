@@ -5,9 +5,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter_login/sign_up.dart';
 import 'package:flutter_login/auth_service.dart';
 import 'package:flutter_signin_button/flutter_signin_button.dart';
-
 import 'package:http/http.dart' as http;
 import 'dart:convert';
+import 'api/post.dart';
 
 // import 'facebook_auth.dart';
 class LoginPage extends StatefulWidget {
@@ -21,14 +21,17 @@ class LoginPageState extends State<LoginPage> {
   var emailController = TextEditingController();
   var passwordController = TextEditingController();
 
- 
+  // IMPLEMENTING POST METHOD 
+  Future<User>? _futureAlbum;
+
   //PASSWORD HIDING 
-  bool _isHidden = true; 
-    void _togglePasswordView() {
+  bool _isHidden = true;
+  void _togglePasswordView() {
     setState(() {
         _isHidden = !_isHidden;
     });
-}
+  }
+
   @override
   Widget build(BuildContext context) {
     final Size size = MediaQuery.of(context).size;
@@ -118,7 +121,8 @@ class LoginPageState extends State<LoginPage> {
                       color: Colors.grey.shade500.withOpacity(0.2),
                     )
                   ]),
-              child: TextField(
+              child: TextFormField(
+                obscureText: _isHidden,
                   controller: passwordController,
                   decoration: InputDecoration(
                     hintText: "Lozinka: ",
@@ -127,14 +131,14 @@ class LoginPageState extends State<LoginPage> {
                       color: Colors.red.shade900,
                     ),
                     suffix: InkWell(
-                     onTap: _togglePasswordView,  
-                    child: Icon(
-                    _isHidden ?         
-                     Icons.visibility :
-                     Icons.visibility_off,
-                  ),
-
-                    ) ,
+                      onTap: _togglePasswordView,
+                      child: Icon(
+                        _isHidden ? 
+                        Icons.visibility : 
+                        Icons.visibility_off,
+                        
+                      ),
+                    ),
                     focusedBorder: OutlineInputBorder(
                       borderRadius: BorderRadius.circular(10),
                       borderSide: const BorderSide(
@@ -146,7 +150,8 @@ class LoginPageState extends State<LoginPage> {
                         borderRadius: BorderRadius.circular(10),
                         borderSide:
                             const BorderSide(color: Colors.white, width: 1.0)),
-                  )),
+                  ),
+                  ),
             ),
             RichText(
               text: TextSpan(
@@ -178,24 +183,33 @@ class LoginPageState extends State<LoginPage> {
               width: 100,
               height: 35,
               child: OutlinedButton(
-                onPressed: () async {
+                onPressed: ()  { 
                   AuthService().signIn(
                       email: emailController.text,
                       password: passwordController.text);
+                  _futureAlbum = createUser(emailController.text, passwordController.text);
+                  //DEFINING HTTP POST METHOD 
+                  // Navigator.pushReplacement(
+                  //               context,
+                  //               MaterialPageRoute(
+                  //                   builder: (context) => const HomePage()));
+                  // final url = Uri.https(
+                  //     'flutter-log-6ec68-default-rtdb.europe-west1.firebasedatabase.app',
+                  //     'flutter-login.json');
+                  // http
+                  //     .post(url,
+                  //         headers: {
+                  //           'Content-type': 'application/json',
+                  //           'Charset': 'utf-8'
+                  //         },
+                  //         body: json.encode({
+                  //           'email': emailController.text,
+                  //           'password': passwordController.text,
+                  //         },)); 
+                  
+                  // END HTTP POST METHOD
 
-                  final url = Uri.https(
-                      'flutter-log-6ec68-default-rtdb.europe-west1.firebasedatabase.app',
-                      'flutter-login.json');
-                  http
-                      .post(url,
-                          headers: {
-                            'Content-type': 'application/json',
-                          },
-                          body: json.encode({
-                            'email': emailController.text,
-                            'password': passwordController.text,
-                          },));
-                      MaterialPageRoute(builder: (context) => const HomePage()); 
+                  //     MaterialPageRoute(builder: (context) => const HomePage()); 
                       // .then((result) {
                       //     if (result == null) {
                       //       Navigator.pushReplacement(
@@ -208,6 +222,7 @@ class LoginPageState extends State<LoginPage> {
                       //       ));
                       //     }
                       //   });
+                        
                 },
                 style: OutlinedButton.styleFrom(
                     foregroundColor: Colors.red.shade900,

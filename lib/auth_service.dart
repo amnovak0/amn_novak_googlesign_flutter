@@ -4,12 +4,12 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'login.dart';
 import 'homepage.dart';
+import 'package:flutter_facebook_auth/flutter_facebook_auth.dart';
 
 // GENERAL IDEA
 
 // 1. HANDLE AUTH STATE
 class AuthService {
-
   //Determine if the user is authenticated.
   handleAuthState() {
     return StreamBuilder(
@@ -24,9 +24,19 @@ class AuthService {
         });
   }
 
-
-
   //SIGN IN WITH FACEBOOK
+  void login() async {
+    final LoginResult result = await FacebookAuth.instance
+        .login(); // by default we request the email and the public profile
+    // or FacebookAuth.i.login()
+    if (result.status == LoginStatus.success) {
+      // you are logged
+      final AccessToken accessToken = result.accessToken!;
+    } else {
+      print(result.status);
+      print(result.message);
+    }
+  }
   signInWithFacebook() async {
     final fb = FacebookLogin();
     // Log in
@@ -61,8 +71,8 @@ class AuthService {
         print('Error while log in: ${res.error}');
         break;
     }
-  } 
-  
+  }
+
   // 2. signInWithGoogle()
 
   signInWithGoogle() async {
@@ -84,15 +94,14 @@ class AuthService {
     return await FirebaseAuth.instance.signInWithCredential(credential);
   }
 
-
   // 3. HANDLE SIGNING OUT
   signOut() async {
     final FirebaseAuth firebaseAuth = FirebaseAuth.instance;
 
-    final GoogleSignIn googleUser =  GoogleSignIn(scopes: <String>["email"]);
+    final GoogleSignIn googleUser = GoogleSignIn(scopes: <String>["email"]);
 
     await firebaseAuth.signOut();
-    
+
     googleUser.signOut();
   }
   // determine if user is authenticated
@@ -100,11 +109,10 @@ class AuthService {
   final FirebaseAuth _auth = FirebaseAuth.instance;
   get user => _auth.currentUser;
 
-   //SIGN UP METHOD
+  //SIGN UP METHOD
   Future signUp({required String email, required String password}) async {
     try {
       await _auth.createUserWithEmailAndPassword(
-        
         email: email,
         password: password,
       );
@@ -123,9 +131,4 @@ class AuthService {
       return e.message;
     }
   }
-  
- }
-
-
-
-
+}
